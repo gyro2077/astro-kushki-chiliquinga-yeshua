@@ -46,6 +46,8 @@ Para demostrar el control del estado y la persistencia de usuarios, se aprovisio
 
 La arquitectura de datos se refactorizó eliminando columnas innecesarias de métodos de autenticación obsoletos (dado que se delegó el acceso seguro a **Google Cloud OAuth**).
 
+![Consola OAuth Google](img/console-cloud-google-clientid-secret-and-redirects-url.png)
+
 ### Esquema Relacional Optimizado
 
 **1. Tabla `users` (Gestor de Economía Simulada):**
@@ -72,8 +74,6 @@ CREATE TABLE chat_history (
 ```
 **Estrategia de Costo Cero:** Aunque todo el historial de conversación (con la marcada y cínica personalidad de Rick) se guarda en esta tabla para mostrarse visualmente al recargar la página, el backend **jamás** envía este historial masivo en el contexto hacia OpenRouter. Solo se envía el último *prompt*, manteniendo un gasto de tokens ínfimo pero logrando una experiencia de usuario continua.
 
-![Consola OAuth Google](img/console-cloud-google-clientid-secret-and-redirects-url.png)
-
 ---
 
 ## 🤖 Workflows Agénticos e Ingeniería de Prompts
@@ -82,14 +82,24 @@ El Chatbot y la síntesis de personajes no se basan en consultas de texto libre.
 
 ---
 
-## 🔧 Guía de Implementación Local
+## ☁️ Entornos en la Nube (CodeSandbox)
+
+Para evaluar el código rápidamente sin clonar el repositorio, puedes acceder a los siguientes entornos en la nube:
+- **Entorno de Evaluación (Lectura):** [CodeSandbox Invite](https://codesandbox.io/invite/45d62cd4z93jmhzz) (Recomendado para revisar la estructura del código).
+- **Vista Previa (Solo visualización):** [CodeSandbox Embed](https://codesandbox.io/p/github/gyro2077/astro-kushki-chiliquinga-yeshua/main?embed=1) *(Nota: Puede presentar errores si no cuenta con las variables de entorno configuradas).*
+
+---
+
+## 🔧 Manual de Configuración y Ejecución (Guía Paso a Paso)
+
+Esta guía está diseñada para que cualquier desarrollador, sin importar su nivel de experiencia, pueda levantar el ecosistema completo (Frontend, Backend, Base de Datos e IA) en su máquina local.
 
 ### Prerrequisitos
-- Node.js (v18+)
-- `npm` o `pnpm` (recomendado para entornos CI/CD)
+- **Node.js** (v18 o superior). [Descargar aquí](https://nodejs.org/).
+- **Gestor de paquetes:** `npm` (incluido con Node) o `pnpm` (recomendado por su velocidad). [Instalar pnpm](https://pnpm.io/installation).
 
-### 1. Instalación
-Clona el repositorio e instala las dependencias:
+### Paso 1: Clonar e Instalar
+Clona el repositorio en tu máquina e instala las dependencias necesarias:
 ```bash
 # Recomendado
 pnpm install
@@ -98,21 +108,41 @@ pnpm install
 npm install
 ```
 
-### 2. Configuración de Entorno
-Copia la plantilla y configura tus llaves:
+### Paso 2: Plantilla de Variables de Entorno
+El proyecto necesita conectarse a servicios externos para funcionar. Crea tu archivo de entorno local copiando la plantilla:
 ```bash
 cp .env.example .env
 ```
-Asegúrate de llenar las variables de PostgreSQL (`DATABASE_URL`), credenciales de Google OAuth y tu token gratuito en `OPENROUTER_API_KEY` (obtenible en openrouter.ai).
+Ahora abre tu nuevo archivo `.env` y sigue los pasos a continuación para obtener cada una de las claves.
 
-### 3. Ejecución
-Levanta el servidor local:
+### Paso 3: Obtener Credenciales (Servicios de Terceros)
+
+#### A. Inteligencia Artificial (OpenRouter)
+1. Ve a [OpenRouter.ai](https://openrouter.ai/) y crea una cuenta gratuita.
+2. Dirígete a la pestaña **Keys** y haz clic en "Create Key".
+3. Copia la clave generada y pégala en tu `.env` bajo la variable `OPENROUTER_API_KEY="sk-or-v1..."`.
+
+#### B. Base de Datos (PostgreSQL en Railway)
+1. Ve a [Railway.app](https://railway.app/) y crea un nuevo proyecto seleccionando **Provision PostgreSQL**.
+2. Entra al servicio de base de datos recién creado y navega a la pestaña **Variables**.
+3. Copia el valor exacto de la variable `DATABASE_PUBLIC_URL` y pégalo en tu `.env` como `DATABASE_URL="..."`.
+4. *Opcional:* Ejecuta los scripts SQL listados más arriba en la consola de Railway para crear las tablas de usuarios y mensajes.
+
+#### C. Autenticación (Google Cloud OAuth)
+1. Ve a la [Consola de Google Cloud](https://console.cloud.google.com/).
+2. Crea un proyecto nuevo y dirígete a **APIs & Services > Credentials**.
+3. Haz clic en "Create Credentials" y selecciona **OAuth client ID** (Tipo: Web application).
+4. En la sección **Authorized redirect URIs**, añade: `http://localhost:4321/api/auth/callback/google` (para desarrollo local).
+5. Copia el **Client ID** y el **Client Secret**, y colócalos en tu `.env` como `GOOGLE_CLIENT_ID` y `GOOGLE_CLIENT_SECRET`.
+
+### Paso 4: Ejecutar el Motor Interdimensional
+Con todas las llaves en su lugar, levanta el servidor local:
 ```bash
 pnpm run dev
 # o
 npm run dev
 ```
-El portal estará disponible en `http://localhost:4321`.
+El portal estará vivo y listo para ser explorado en `http://localhost:4321`.
 
 ---
 
