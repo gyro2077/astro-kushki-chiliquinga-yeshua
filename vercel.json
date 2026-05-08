@@ -1,0 +1,10 @@
+{
+  "functions": {
+    "*.func/**": {
+      "runtime": "nodejs18"
+    },
+    "render.func/**": {
+      "runtime": "nodejs18"
+    }
+  }
+}
