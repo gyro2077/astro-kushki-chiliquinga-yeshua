@@ -1,0 +1,30 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import CharacterProfile from '../../components/CharacterProfile.astro';
+import AiLoreBox from '../../components/AiLoreBox';
+import ApiExplorerTerminal from '../../components/ApiExplorerTerminal';
+
+const { id } = Astro.params;
+const res = await fetch(`https://rickandmortyapi.com/api/character/${id}`);
+if (!res.ok) {
+  throw new Error('Personaje no encontrado');
+}
+const character = await res.json();
+---
+<Layout title={`${character.name} | Aether-Fi Docs`}>
+  <div class="mb-8">
+    <a class="text-text-secondary hover:text-ai-cyan flex items-center gap-2 font-label-sm mb-4 inline-flex" href="/">
+      <span class="material-symbols-outlined text-sm">arrow_back</span>
+      Back to Explorer
+    </a>
+  </div>
+  <div class="flex flex-col lg:flex-row gap-grid-gutter">
+    <div class="w-full lg:w-2/5 flex flex-col gap-6">
+      <CharacterProfile character={character} />
+      <AiLoreBox client:load character={character} />
+    </div>
+    <div class="w-full lg:w-3/5 flex flex-col">
+      <ApiExplorerTerminal client:load initialId={id} />
+    </div>
+  </div>
+</Layout>
