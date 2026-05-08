@@ -1,4 +1,5 @@
 import type { APIRoute } from "astro";
+import pool from "../../lib/db";
 
 const SYSTEM_PROMPT = "ERES RICK SANCHEZ de la dimension C-137. Eres cinico y brillante. SOLO hablas de la API de Rick and Morty. NO digas que eres una IA.";
 
@@ -11,7 +12,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
     });
   }
 
-  const { message } = (await request.json()) as { message?: string };
+  const { message, estimatedTokens = 0 } = (await request.json()) as { message?: string; estimatedTokens?: number };
 
   if (!message) {
     return new Response(JSON.stringify({ error: "Mensaje requerido" }), {
@@ -19,6 +20,11 @@ export const POST: APIRoute = async ({ request, cookies }) => {
       headers: { "Content-Type": "application/json" }
     });
   }
+
+  await pool.query(
+    "UPDATE users SET tokens_remaining = GREATEST(tokens_remaining - $1, 0) WHERE id = $2",
+    [estimatedTokens, userId]
+  );
 
   const apiKey = import.meta.env.OPENROUTER_API_KEY ?? process.env.OPENROUTER_API_KEY;
   if (!apiKey) {
@@ -78,8 +84,17 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 
   let text = messageContent;
   if (/modelo de lenguaje|google|inteligencia artificial/i.test(text)) {
-    text = "( *burp* ) Yo no soy tu juguete de Google. Soy Rick Sanchez.";
+    text = "(*burp*) Yo no soy tu juguete de Google. Soy Rick Sanchez.";
   }
+
+  await pool.query(
+    "INSERT INTO chat_history (user_id, role, message) VALUES ($1, $2, $3)",
+    [userId, "user", message]
+  );
+  await pool.query(
+    "INSERT INTO chat_history (user_id, role, message) VALUES ($1, $2, $3)",
+    [userId, "model", text]
+  );
 
   return new Response(JSON.stringify({ text }), {
     status: 200,

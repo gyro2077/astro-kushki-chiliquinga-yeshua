@@ -39,13 +39,26 @@ const { title = "Aether-Fi Docs" } = Astro.props;
       <slot />
     </main>
     <footer class="w-full py-section-padding bg-surface-container-lowest border-t border-white/5 mt-auto">
-      <div class="flex flex-col md:flex-row justify-between items-center gap-element-gap px-grid-gutter max-w-container-max mx-auto">
-        <div class="flex items-center gap-4">
-          <span class="font-h2 text-h2 text-ai-purple">Aether-Fi Docs</span>
-          <span class="font-body-md text-body-md text-text-secondary">
-            © 2024 Aether-Fi Interdimensional. Secured by Quantum-Fintech Protocols.
-          </span>
+      <div class="flex flex-col gap-6 px-grid-gutter max-w-container-max mx-auto">
+        <div class="flex flex-col md:flex-row justify-between items-center gap-element-gap">
+          <div class="flex flex-col md:flex-row items-center gap-4">
+            <span class="font-h2 text-h2 text-ai-purple">Aether-Fi Docs</span>
+            <span class="font-body-md text-body-md text-text-secondary">
+              Powered by Rick and Morty API + OpenRouter AI
+            </span>
+          </div>
+          <a
+            href="https://github.com/gyro2077"
+            target="_blank"
+            class="flex items-center gap-2 text-text-secondary hover:text-ai-cyan transition-colors"
+          >
+            <span class="material-symbols-outlined text-sm">code</span>
+            <span class="font-body-md text-sm">Desarrollado por Yeshua Chiliquinga (@gyro2077)</span>
+          </a>
         </div>
+        <p class="text-xs text-text-secondary text-center max-w-2xl mx-auto leading-relaxed">
+          (*Burp*)... Sí, este portal fue ensamblado por el tal @gyro2077. Su código no es nivel C-137, pero para los estándares primitivos de este universo, es una maldita obra de arte. Si los reclutadores de Kushki deberían darle el trabajo antes de que decida colapsar su economía interdimensional.
+        </p>
       </div>
     </footer>
     <Chatbot client:load />

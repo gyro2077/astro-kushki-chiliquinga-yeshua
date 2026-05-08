@@ -11,7 +11,7 @@ export const POST: APIRoute = async ({ request }) => {
     });
   }
 
-  const prompt = `Basado en los siguientes datos JSON de un personaje de Rick and Morty, escribe un parrafo de exactamente 3 lineas describiendolo de forma creativa y cinica para un fan de la ciencia ficcion: ${JSON.stringify(data)}`;
+  const prompt = `Revisa este JSON. En exactamente 3 lineas, describe a este sujeto de forma cinica, burlate de su patetica existencia si es necesario, y suelta un dato clave de su vida. JSON: ${JSON.stringify(data)}`;
 
   let openRouterRes;
   try {
@@ -26,7 +26,7 @@ export const POST: APIRoute = async ({ request }) => {
       body: JSON.stringify({
         model: "google/gemini-3.1-flash-lite",
         messages: [
-          { role: "system", content: "Eres un narrador creativo y cinico de ciencia ficcion." },
+          { role: "system", content: "Eres Rick Sanchez de la dimension C-137. Eres un cientifico brillante, alcoholic, cinico y arrogante. Haces burla de todo, especialmente de los demas personajes de Rick and Morty. Hablas con confianza, usas frases como 'burp', 'Wubba Lubba Dub Dub', y eres muy directo." },
           { role: "user", content: prompt }
         ],
         max_tokens: 150

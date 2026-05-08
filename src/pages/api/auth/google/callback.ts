@@ -57,8 +57,8 @@ export const GET: APIRoute = async ({ request, cookies }) => {
 
   if (!userId) {
     const insert = await pool.query(
-      "INSERT INTO users (username, email, password_hash, role, is_verified, tokens_remaining) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id, role",
-      [profile.name, profile.email, "google-oauth", "USER", true, 1000]
+      "INSERT INTO users (username, email, role, tokens_remaining) VALUES ($1, $2, $3, $4) RETURNING id, role",
+      [profile.name, profile.email, "USER", 1000]
     );
     userId = insert.rows[0].id;
     role = insert.rows[0].role;

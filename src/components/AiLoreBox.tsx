@@ -57,7 +57,7 @@ export default function AiLoreBox({ character }: AiLoreBoxProps) {
           disabled={loading}
         >
           <span className="material-symbols-outlined text-ai-purple">generating_tokens</span>
-          {loading ? "Generando..." : "Generar resumen con IA"}
+          {loading ? "Generando..." : "Generar resumen con Rickbot"}
         </button>
       </div>
     </div>

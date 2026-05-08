@@ -1,12 +1,15 @@
 ---
-export const prerender = true;
 import Layout from '../layouts/Layout.astro';
 import CharacterCard from '../components/CharacterCard.astro';
 import SearchBar from '../components/SearchBar';
 
-const res = await fetch('https://rickandmortyapi.com/api/character');
+const url = new URL(Astro.request.url);
+const page = Number(url.searchParams.get("page") ?? "1");
+
+const res = await fetch(`https://rickandmortyapi.com/api/character?page=${page}`);
 const data = await res.json();
 const characters = data.results;
+const info = data.info;
 ---
 <Layout title="Aether-Fi Docs | Explorer">
   <section class="flex flex-col items-center justify-center text-center py-section-padding relative">
@@ -32,6 +35,31 @@ const characters = data.results;
       {characters.map((char) => (
         <CharacterCard character={char} />
       ))}
+    </div>
+    <div class="flex justify-center items-center gap-4 mt-10">
+      <a
+        href={`?page=${page - 1}`}
+        class={`px-6 py-2 rounded-lg font-label-sm font-bold transition-all border ${
+          page <= 1
+            ? "border-white/10 text-text-secondary/40 pointer-events-none"
+            : "border-ai-cyan/30 text-ai-cyan hover:bg-ai-cyan/10 hover:shadow-[0_0_12px_rgba(6,182,212,0.3)]"
+        }`}
+      >
+        Anterior
+      </a>
+      <span class="text-text-secondary text-sm font-code-snippet">
+        Pagina {page} de {info?.pages ?? 1}
+      </span>
+      <a
+        href={`?page=${page + 1}`}
+        class={`px-6 py-2 rounded-lg font-label-sm font-bold transition-all border ${
+          page >= (info?.pages ?? 1)
+            ? "border-white/10 text-text-secondary/40 pointer-events-none"
+            : "border-ai-cyan/30 text-ai-cyan hover:bg-ai-cyan/10 hover:shadow-[0_0_12px_rgba(6,182,212,0.3)]"
+        }`}
+      >
+        Siguiente
+      </a>
     </div>
   </section>
 </Layout>
