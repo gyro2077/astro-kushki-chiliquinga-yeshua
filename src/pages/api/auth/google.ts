@@ -2,7 +2,7 @@ import type { APIRoute } from "astro";
 
 export const GET: APIRoute = async () => {
   const clientId = import.meta.env.GOOGLE_CLIENT_ID ?? process.env.GOOGLE_CLIENT_ID;
-  const appUrl = import.meta.env.APP_URL ?? process.env.APP_URL ?? "https://astro-kushki-chiliquinga-yeshua.vercel.app";
+  const appUrl = import.meta.env.APP_URL ?? process.env.APP_URL ?? "http://localhost:4321";
 
   if (!clientId) {
     return new Response("GOOGLE_CLIENT_ID is not defined", { status: 500 });
