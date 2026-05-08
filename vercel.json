@@ -1,10 +1,10 @@
 {
   "functions": {
     "*.func/**": {
-      "runtime": "nodejs24"
+      "runtime": "nodejs24.x"
     },
     "render.func/**": {
-      "runtime": "nodejs24"
+      "runtime": "nodejs24.x"
     }
   }
 }
