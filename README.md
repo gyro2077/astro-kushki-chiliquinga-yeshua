@@ -32,6 +32,33 @@ Esto soluciona los problemas críticos de bloqueos regionales (Error 429) de la 
 Invocar APIs de Inteligencia Artificial o de Bases de Datos desde el cliente es una vulnerabilidad crítica (expone secretos). La aplicación está configurada con un adaptador SSR en Node/Vercel. 
 El servidor actúa como un **Proxy Inverso Interno**: las peticiones del frontend viajan al backend de Astro, el cual inyecta las variables de entorno de forma segura (`OPENROUTER_API_KEY`, `DATABASE_URL`), se comunica con la IA y devuelve la respuesta limpia. 
 
+#### Flujo de Comunicación Seguro (Arquitectura SSR)
+```mermaid
+sequenceDiagram
+    participant U as Usuario (Cliente/React)
+    participant A as Astro SSR (Servidor Backend)
+    participant DB as PostgreSQL (Railway)
+    participant AI as OpenRouter (Gemini API)
+
+    Note over U, A: 1. Petición Segura
+    U->>A: Envía mensaje (Ej: "Háblame de Rick")
+    
+    Note over A, DB: 2. Autorización Interna
+    A->>DB: Verifica y deduce saldo de Tokens
+    DB-->>A: Transacción Aprobada (OK)
+
+    Note over A, AI: 3. Proxy de IA (Secretos Ocultos)
+    A->>AI: Petición usando OPENROUTER_API_KEY
+    AI-->>A: Devuelve respuesta generada
+    
+    Note over A, DB: 4. Persistencia
+    A->>DB: Guarda el historial en la BD
+    
+    Note over A, U: 5. Entrega al Cliente
+    A-->>U: Devuelve la respuesta renderizada
+```
+
+
 ### Partial Hydration (Lazy Loading) y Gestión de Memoria
 **¿Qué componentes cargarías de forma diferida?**
 En componentes críticos de interacción inmediata (como el Chatbot flotante o la barra de búsqueda), utilizamos la directiva `client:load`. Sin embargo, para escalar la plataforma con paneles de analítica pesados o renders 3D, utilizaríamos `client:visible`. Astro ignorará completamente el JavaScript de esos componentes hasta que el usuario haga *scroll* y entren en el *viewport*, salvando megabytes de RAM en dispositivos móviles.
