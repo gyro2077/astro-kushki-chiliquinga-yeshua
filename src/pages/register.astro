@@ -1,0 +1,25 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+<Layout title="Crear cuenta | Aether-Fi Docs">
+  <div class="max-w-md mx-auto glass-panel rounded-xl p-8">
+    <h1 class="font-h2 text-[24px] text-text-primary mb-2">Crear cuenta</h1>
+    <p class="text-text-secondary mb-6 text-sm">
+      Crea tu cuenta y verifica tu correo para habilitar el acceso.
+    </p>
+    <div class="space-y-4">
+      <a
+        class="w-full flex items-center justify-center gap-2 bg-primary-container text-on-primary-container px-4 py-2 rounded font-label-sm font-bold hover:opacity-90 transition-opacity"
+        href="/api/auth/google"
+      >
+        Registrarse con Google
+      </a>
+      <p class="text-text-secondary text-sm">
+        El registro se realiza solo con Gmail.
+      </p>
+      <p class="text-text-secondary text-sm">
+        Ya tienes cuenta? <a class="text-ai-cyan" href="/login">Inicia sesion</a>.
+      </p>
+    </div>
+  </div>
+</Layout>

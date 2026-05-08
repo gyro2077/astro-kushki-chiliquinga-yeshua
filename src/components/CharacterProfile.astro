@@ -1,0 +1,48 @@
+---
+const { character } = Astro.props;
+const statusLabel = character.status === "Alive" ? "Alive" : character.status === "Dead" ? "Dead" : "Unknown";
+const statusClasses =
+  character.status === "Alive"
+    ? "bg-status-alive/20 text-status-alive border-status-alive/30"
+    : character.status === "Dead"
+      ? "bg-status-dead/20 text-status-dead border-status-dead/30"
+      : "bg-status-unknown/20 text-status-unknown border-status-unknown/30";
+---
+<div class="glass-panel rounded-xl overflow-hidden neon-glow transition-all duration-300">
+  <div class="relative h-80 w-full overflow-hidden">
+    <img class="w-full h-full object-cover" src={character.image} alt={`${character.name} Profile`} />
+    <div class="absolute inset-0 bg-gradient-to-t from-bg-main to-transparent"></div>
+  </div>
+  <div class="p-card-padding">
+    <div class="mb-4 flex items-center gap-3">
+      <h1 class="font-h1 text-h1 text-text-primary">{character.name}</h1>
+      <span class={`px-3 py-1 rounded-full font-label-sm border flex items-center gap-2 ${statusClasses}`}>
+        <span class="w-2 h-2 rounded-full bg-current"></span>
+        {statusLabel}
+      </span>
+    </div>
+    <div class="grid grid-cols-2 gap-4 mb-4">
+      <div>
+        <p class="font-label-sm text-text-secondary uppercase mb-1">Species</p>
+        <p class="font-body-md text-text-primary font-medium flex items-center gap-2">
+          <span class="material-symbols-outlined text-ai-cyan text-sm">psychology</span>
+          {character.species}
+        </p>
+      </div>
+      <div>
+        <p class="font-label-sm text-text-secondary uppercase mb-1">Gender</p>
+        <p class="font-body-md text-text-primary font-medium flex items-center gap-2">
+          <span class="material-symbols-outlined text-ai-cyan text-sm">male</span>
+          {character.gender}
+        </p>
+      </div>
+    </div>
+    <div>
+      <p class="font-label-sm text-text-secondary uppercase mb-1">Origin</p>
+      <p class="font-body-md text-text-primary font-medium flex items-center gap-2">
+        <span class="material-symbols-outlined text-ai-cyan text-sm">public</span>
+        {character.origin?.name ?? "Unknown"}
+      </p>
+    </div>
+  </div>
+</div>
