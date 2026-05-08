@@ -9,5 +9,10 @@ export default defineConfig({
     webAnalytics: { enabled: false },
     isr: false
   }),
-  integrations: [react(), tailwind()]
+  integrations: [react(), tailwind()],
+  vite: {
+    server: {
+      allowedHosts: true
+    }
+  }
 });
